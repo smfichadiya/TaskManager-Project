@@ -18,10 +18,10 @@ namespace TaskManagerProject.Domain.Entities
 
         public virtual ICollection<TaskComment> Comments { get; set; }
 
-        public virtual int ProjectId { get; set; } //this is foreign key
+        public virtual int? ProjectId { get; set; } //this is foreign key
         public virtual Project Project { get; set; }
 
-        public virtual int UserId { get; set; }
+        public virtual int? UserId { get; set; }
         public virtual User User { get; set; }
     }
 

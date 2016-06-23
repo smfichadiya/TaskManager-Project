@@ -25,7 +25,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+            return db.Users.Where(u => u.IsActive).ToList();
         }
 
         public User GetById(int id)

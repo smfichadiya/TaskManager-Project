@@ -15,7 +15,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
         public bool Create(Project project)
         {
-            var dbCustomer = _customerRepository.GetById(project.CustomerId);
+            var dbCustomer = _customerRepository.GetById((int)project.CustomerId);
 
             if (dbCustomer != null)
             {
@@ -32,7 +32,16 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var dbProject = GetById(id);
+
+            if(dbProject != null)
+            {
+                dbProject.IsActive = false;
+                db.SaveChanges();
+                return true;
+            }
+
+            return false;
         }
 
         public List<Project> GetAll()
@@ -40,14 +49,33 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             return db.Projects.ToList();
         }
 
+        public List<Project> GetByCustomerId(int id)
+        {
+            var dbProjectsByCustomer = db.Projects.Where(p => p.CustomerId == id).ToList();
+
+            return dbProjectsByCustomer;
+        }
+
         public Project GetById(int id)
         {
-            throw new NotImplementedException();
+            return db.Projects.FirstOrDefault(p => p.ID == id);
         }
 
         public bool Update(Project project)
         {
-            throw new NotImplementedException();
+            var dbProject = GetById(project.ID);
+
+            if(dbProject != null)
+            {
+                dbProject.IsActive = project.IsActive;
+                dbProject.Name = project.Name;
+                dbProject.CustomerId = project.CustomerId;
+
+                db.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
     }
 }

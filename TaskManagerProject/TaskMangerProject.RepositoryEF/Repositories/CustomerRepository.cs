@@ -29,6 +29,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             if (dbCustomer != null)
             {
                 dbCustomer.IsActive = false;
+                //db.Customers.Remove(dbCustomer);
                 db.SaveChanges();
                 return true;
             }

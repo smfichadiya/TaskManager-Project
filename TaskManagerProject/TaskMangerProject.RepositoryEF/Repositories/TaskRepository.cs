@@ -24,23 +24,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             if (task.ProjectId <= 0)
                 return false;
 
-            var dbProject = _projectRepsitory.GetById(task.ProjectId);
-
-            if (dbProject == null)
-                return false;
-            else
-                task.Project = dbProject;
-
-            //user assigned check
-            if (task.UserId <= 0)
-                return false;
-
-            var dbUser = _userRepository.GetById(task.UserId);
-
-            if (dbUser == null)
-                return false;
-            else
-                task.User = dbUser;
+            task.DateCreated = DateTime.Now;
 
             //adding the task to DB collection
             db.Tasks.Add(task);
@@ -113,5 +97,6 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
             return true;
         }
+
     }
 }

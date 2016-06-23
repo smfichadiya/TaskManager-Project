@@ -9,30 +9,30 @@ using TaskManagerProject.Domain.RepositoryEF.Repositories;
 
 namespace TaskManagerProjectApp.Controllers
 {
-    public class CustomersController : Controller
+    public class TasksController : Controller
     {
-        ICustomerRepository _customerRepository = new CustomerRepository();
+        ITaskRepository _taskRepository = new TaskRepository();
         IProjectRepository _projectRepository = new ProjectRepository();
 
-        // GET: Customers
+        // GET: Tasks
         public ActionResult Index()
         {
-            var customers = _customerRepository.GetAll();
-
-            return View(customers);
+            var tasks = _taskRepository.GetAll();
+            return View(tasks);
         }
 
         public ActionResult Create()
         {
+            ViewBag.ProjectId = new SelectList(_projectRepository.GetAll(), "ID", "Name");
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Customer customer)
+        public ActionResult Create(Task task)
         {
             if (ModelState.IsValid)
             {
-                if (_customerRepository.Create(customer))
+                if (_taskRepository.Create(task))
                     return RedirectToAction("Index");
             }
 
@@ -41,31 +41,31 @@ namespace TaskManagerProjectApp.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View(_customerRepository.GetById(id));
+            ViewBag.ProjectId = new SelectList(_projectRepository.GetAll(), "ID", "Name");
+            return View(_taskRepository.GetById(id));
         }
 
         [HttpPost]
-        public ActionResult Edit(Customer customer)
+        public ActionResult Edit(Task task)
         {
             if (ModelState.IsValid)
             {
-                if (_customerRepository.Update(customer))
+                if (_taskRepository.Update(task))
                     return RedirectToAction("Index");
             }
 
-            return View(customer);
+            return View(task);
         }
 
-
-        public ActionResult Delete(Customer customer)
+        public ActionResult Delete(Task task)
         {
-            return View(_customerRepository.GetById(customer.ID));
+            return View(_taskRepository.GetById(task.ID));
         }
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            if (_customerRepository.Delete(id))
+            if (_taskRepository.Delete(id))
                 return RedirectToAction("Index");
 
             return View();
@@ -73,13 +73,12 @@ namespace TaskManagerProjectApp.Controllers
 
         public ActionResult Details(int? id)
         {
-            var dbCustomer = _customerRepository.GetById((int)id);
-            if(dbCustomer != null)
+            var dbTask = _taskRepository.GetById((int)id);
+            if (dbTask != null)
             {
-                return View(dbCustomer);
+                return View(dbTask);
             }
             return RedirectToAction("Index");
         }
-
     }
 }

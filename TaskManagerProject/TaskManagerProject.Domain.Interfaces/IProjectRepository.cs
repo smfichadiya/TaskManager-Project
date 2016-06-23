@@ -9,6 +9,6 @@ namespace TaskManagerProject.Domain.Interfaces
 {
     public interface IProjectRepository : IGenericRepository<Project>
     {
-    
+        List<Project> GetByCustomerId(int ID);
     }
 }
