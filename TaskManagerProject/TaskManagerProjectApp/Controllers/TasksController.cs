@@ -28,7 +28,7 @@ namespace TaskManagerProjectApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Task task)
+        public ActionResult Create(MyTask task)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace TaskManagerProjectApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Task task)
+        public ActionResult Edit(MyTask task)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace TaskManagerProjectApp.Controllers
             return View(task);
         }
 
-        public ActionResult Delete(Task task)
+        public ActionResult Delete(MyTask task)
         {
             return View(_taskRepository.GetById(task.ID));
         }

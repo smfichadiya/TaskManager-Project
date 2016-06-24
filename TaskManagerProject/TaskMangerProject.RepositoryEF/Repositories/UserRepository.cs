@@ -11,9 +11,9 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        Database db = new Database();
+        MyDatabase db = new MyDatabase();
 
-        public bool Create(User obj)
+        public bool Create(MyUser obj)
         {
             throw new NotImplementedException();
         }
@@ -23,17 +23,17 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             throw new NotImplementedException();
         }
 
-        public List<User> GetAll()
+        public List<MyUser> GetAll()
         {
-            return db.Users.Where(u => u.IsActive).ToList();
+            return db.MyUsers.Where(u => u.IsActive).ToList();
         }
 
-        public User GetById(int id)
+        public MyUser GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Update(User obj)
+        public bool Update(MyUser obj)
         {
             throw new NotImplementedException();
         }

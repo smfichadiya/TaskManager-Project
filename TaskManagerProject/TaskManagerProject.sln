@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerProject.Domain.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerProject.Domain.Interfaces", "TaskManagerProject.Domain.Interfaces\TaskManagerProject.Domain.Interfaces.csproj", "{76A93682-352D-4B90-A694-DAAE45652BC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskMangerProject.RepositoryEF", "TaskMangerProject.RepositoryEF\TaskMangerProject.RepositoryEF.csproj", "{362949F2-4CCF-47A0-B3C5-5EC73F884BD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerProject.RepositoryEF", "TaskMangerProject.RepositoryEF\TaskManagerProject.RepositoryEF.csproj", "{362949F2-4CCF-47A0-B3C5-5EC73F884BD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

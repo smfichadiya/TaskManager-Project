@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagerProject.Domain.Entities
 {
-    public class User : BaseEntity
+    public class MyUser : BaseEntity
     {
         public string Email { get; set; }
 
@@ -14,6 +14,6 @@ namespace TaskManagerProject.Domain.Entities
 
         public string DisplayName { get; set; }
 
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<MyTask> Tasks { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagerProject.Domain.Entities
 {
-    public class Task : BaseEntity
+    public class MyTask : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace TaskManagerProject.Domain.Entities
         public virtual Project Project { get; set; }
 
         public virtual int? UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual MyUser User { get; set; }
     }
 
     public enum TaskType
@@ -31,6 +31,6 @@ namespace TaskManagerProject.Domain.Entities
         Bug = 1,
         ChangeRequest = 2,
         SupportRequest = 3
-        //Task, Bug, ChangeRequest, SupportRequest
+        //MyTask, Bug, ChangeRequest, SupportRequest
     }
 }

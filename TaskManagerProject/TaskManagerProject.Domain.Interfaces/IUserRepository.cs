@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagerProject.Domain.Interfaces
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<MyUser>
     {
 
     }

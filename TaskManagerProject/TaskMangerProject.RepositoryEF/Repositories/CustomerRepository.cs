@@ -10,7 +10,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
-        Database db = new Database();
+        MyDatabase db = new MyDatabase();
 
         public bool Create(Customer customer)
         {

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TaskManagerProject.Domain.Interfaces
 {
-    public interface ITaskRepository : IGenericRepository<Task>
+    public interface ITaskRepository : IGenericRepository<MyTask>
     {
         List<TaskComment> GetComments(int taskId);
         string GetAssigneeName(int taskId);
