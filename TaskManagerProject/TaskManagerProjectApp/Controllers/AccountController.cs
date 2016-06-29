@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TaskManagerProjectApp.Models;
 using TaskManagerProject.RepositoryEF;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TaskManagerProjectApp.Controllers
 {
@@ -18,6 +19,7 @@ namespace TaskManagerProjectApp.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManger;
 
         public AccountController()
         {
@@ -50,6 +52,18 @@ namespace TaskManagerProjectApp.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManger ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManger = value;
             }
         }
 
@@ -138,9 +152,52 @@ namespace TaskManagerProjectApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Test()
+       public async Task<String> SendMeMail()
         {
-            return View();
+            var name = User.Identity.Name;
+            var user = UserManager.FindByName(name);
+
+            await UserManager.SendEmailAsync(user.Id, "TEST EMAIL","All WENT GOOD");
+         
+           
+            return "Sended mail";
+        }
+
+        [AllowAnonymous]
+        public String AddAdmin()
+        {
+            const string name = "admin@admin.com";
+            const string password = "Admin123#";
+            const string roleName = "Admin";
+
+            //Create Role Admin if it does not exist
+            var role = RoleManager.FindByName(roleName);
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                var roleresult = RoleManager.Create(role);
+            }
+
+            var user = UserManager.FindByName(name);
+            if (user == null)
+            {
+                user = new AppUser { UserName = name, Email = name };
+                var result = UserManager.Create(user, password);
+                result = UserManager.SetLockoutEnabled(user.Id, false);
+            }
+
+            // Add user admin to Role Admin if not already added
+            var rolesForUser = UserManager.GetRoles(user.Id);
+            if (!rolesForUser.Contains(role.Name))
+            {
+                var result = UserManager.AddToRole(user.Id, role.Name);
+            }
+
+            user.EmailConfirmed = true;
+             UserManager.Update(user);
+
+            return "It is OK";
+
         }
 
         protected override void Dispose(bool disposing)

@@ -12,6 +12,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using TaskManagerProject.RepositoryEF;
 using TaskManagerProject.Domain.RepositoryEF;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Net;
 
 namespace TaskManagerProjectApp
 {
@@ -19,9 +22,40 @@ namespace TaskManagerProjectApp
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            sendMail(message);
             return Task.FromResult(0);
         }
+
+        void sendMail(IdentityMessage message)
+        {
+            #region formatter
+            string text = string.Format("Please click on this link to {0}: {1}", message.Subject, message.Body);
+            string html ="<strong>"+ message.Body + "</strong>";
+
+            //html += HttpUtility.HtmlEncode(@" Or click on the copy the following link on the browser:" + message.Body);
+            #endregion
+
+            MailMessage msg = new MailMessage();
+            msg.From = new MailAddress("TaskProject@Management.com");
+            msg.To.Add(new MailAddress(message.Destination));
+            msg.Subject = message.Subject;
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+
+            using (SmtpClient smtpClient = new SmtpClient())
+            {
+                NetworkCredential credentials = new NetworkCredential("zadacistr@gmail.com", "edendvatri");
+                smtpClient.Credentials = credentials;
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.Port = 587;
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(msg);
+                
+            }
+               
+        }
+
+
     }
 
     public class SmsService : IIdentityMessageService
@@ -55,10 +89,10 @@ namespace TaskManagerProjectApp
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = true,
                 RequireLowercase = true,
-                RequireUppercase = true,
+                RequireUppercase = false,
             };
 
             // Configure user lockout defaults
@@ -89,6 +123,19 @@ namespace TaskManagerProjectApp
         }
     }
 
+    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    {
+        public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+            : base(roleStore)
+        {
+        }
+
+        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+        {
+            return new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<MyDatabase>()));
+        }
+    }
+
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<AppUser, string>
     {
@@ -107,4 +154,7 @@ namespace TaskManagerProjectApp
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
     }
+
+
+
 }

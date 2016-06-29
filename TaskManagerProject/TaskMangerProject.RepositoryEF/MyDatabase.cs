@@ -18,7 +18,9 @@ namespace TaskManagerProject.Domain.RepositoryEF
     public class MyDatabase : IdentityDbContext<AppUser>
     {
         public MyDatabase() : base("name=DefaultConnection")
-        { }
+        {
+           
+        }
 
         public DbSet<MyTask> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
@@ -26,5 +28,7 @@ namespace TaskManagerProject.Domain.RepositoryEF
         public DbSet<Customer> Customers { get; set; }
 
         public DbSet<DashboardWidget> DashboardWidgets { get; set; }
+
+        
     }
 }
