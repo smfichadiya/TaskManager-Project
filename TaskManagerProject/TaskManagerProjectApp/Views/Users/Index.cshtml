@@ -1,57 +1,98 @@
 ﻿@model IEnumerable<TaskManagerProject.Domain.Entities.MyUser>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ActivateUser";
 }
 
-<h2>Index</h2>
+<h2>All Users</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",null,new { @class="btn btn-info"})
 </p>
 <table class="table">
     <tr>
+       
         <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
+      
         <th>
             @Html.DisplayNameFor(model => model.DisplayName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => model.AppUserId)
         </th>
+        <th>
+
+        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.DateCreated)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DisplayName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+
+             <td>
+                @Html.DisplayFor(modelItem => item.AppUserId)
+            </td>
+
+            <td>
+                <a class="btn btn-warning btn-edit" href="/Users/Edit" userId="@item.ID"> Edit </a>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            
+            <td>
+                @Html.CheckBoxFor(modelItem => item.IsActive, new { @id="cb-"+@item.AppUserId, @disabled = "disabled" })
+            </td>
+            <td>
+                @if (!item.IsActive)
+                {
+                  <button class="btn btn-success btn-activate" id="@item.AppUserId"> Activate </button>
+                }
+               
+            </td>
+        </tr>
+    }
 
 </table>
+
+@section scripts{
+        <script>
+            $(function () {
+                $(".btn-activate").on("click", function () {
+                    event.preventDefault();
+                    var userId = $(this).prop("id");
+                    var url = "/Users/Index?userId=" + userId;
+                    $.post(url,function(result){
+                        console.log(result);
+                        $("#cb-" + userId).prop('checked', true);
+                        $("#"+userId).hide();
+                    });
+                    console.log(userId);
+                });
+            });
+        </script>
+    }
+
+
+
+

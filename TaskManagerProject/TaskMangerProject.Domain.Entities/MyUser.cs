@@ -14,6 +14,8 @@ namespace TaskManagerProject.Domain.Entities
 
         public string DisplayName { get; set; }
 
+        public string AppUserId { get; set; }
+
         public virtual ICollection<MyTask> Tasks { get; set; }
     }
 }

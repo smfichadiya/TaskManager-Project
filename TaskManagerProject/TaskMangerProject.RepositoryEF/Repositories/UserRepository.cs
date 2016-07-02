@@ -15,7 +15,23 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
         public bool Create(MyUser obj)
         {
-            throw new NotImplementedException();
+
+            db.MyUsers.Add(obj);
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public bool Create(MyUser obj, String AppUserId)
+        {
+            obj.DateCreated = DateTime.Now;
+            obj.IsActive = false;
+            obj.AppUserId = AppUserId;
+
+            db.MyUsers.Add(obj);
+            db.SaveChanges();
+
+            return true;
         }
 
         public bool Delete(int id)
@@ -25,17 +41,26 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
         public List<MyUser> GetAll()
         {
-            return db.MyUsers.Where(u => u.IsActive).ToList();
+            return db.MyUsers.ToList();
         }
 
         public MyUser GetById(int id)
         {
-            throw new NotImplementedException();
+            return GetAll().FirstOrDefault(x => x.ID == id);
+        }
+
+        public MyUser GetByAppUserId(string id)
+        {
+            return db.MyUsers.FirstOrDefault(u => u.AppUserId == id);        
         }
 
         public bool Update(MyUser obj)
         {
-            throw new NotImplementedException();
+            var dbObj = GetById(obj.ID);
+            dbObj.IsActive = obj.IsActive;
+
+            db.SaveChanges();
+            return true;
         }
     }
 }

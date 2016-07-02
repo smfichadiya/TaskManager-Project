@@ -11,6 +11,9 @@ using Microsoft.Owin.Security;
 using TaskManagerProjectApp.Models;
 using TaskManagerProject.RepositoryEF;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TaskManagerProject.Domain.Interfaces;
+using TaskManagerProject.Domain.RepositoryEF.Repositories;
+using TaskManagerProject.Domain.Entities;
 
 namespace TaskManagerProjectApp.Controllers
 {
@@ -20,6 +23,8 @@ namespace TaskManagerProjectApp.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManger;
+
+        IUserRepository _userRepository = new UserRepository();
 
         public AccountController()
         {
@@ -72,6 +77,11 @@ namespace TaskManagerProjectApp.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return View("Unauthorized");
+            }
+               
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -132,6 +142,15 @@ namespace TaskManagerProjectApp.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    var myUser = new MyUser
+                    {
+                        AppUserId = user.Id,
+                        DateCreated = DateTime.Now,
+                        DisplayName = user.Email,
+                        Email = user.Email,
+                        IsActive = false
+                    };
+                    _userRepository.Create(myUser);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -152,7 +171,102 @@ namespace TaskManagerProjectApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-       public async Task<String> SendMeMail()
+
+        //
+        // GET: /Account/ForgotPassword
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                var user = await UserManager.FindByNameAsync(model.Email);
+                if (user == null )
+                {
+                    return View("ForgotPasswordDoesntExist");
+                }
+
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                ViewBag.Link = callbackUrl;
+                return View("ForgotPasswordConfirmation");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/ForgotPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string userId,string code)
+        {
+            var user = UserManager.FindById(userId);
+
+            if (user == null || code == null)
+            {
+                return View("Error");
+            }
+               
+            ViewBag.userEmail = user.Email;
+
+            return View();
+        }
+
+        //
+        // POST: /Account/ResetPassword
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user does not exist
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        //
+        // GET: /Account/ResetPasswordConfirmation
+        [AllowAnonymous]
+        public ActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+        public async Task<String> SendMeMail()
         {
             var name = User.Identity.Name;
             var user = UserManager.FindByName(name);
@@ -194,11 +308,35 @@ namespace TaskManagerProjectApp.Controllers
             }
 
             user.EmailConfirmed = true;
-             UserManager.Update(user);
+            UserManager.Update(user);
+
+            var myUser = new MyUser
+            {
+                AppUserId = user.Id,
+                DateCreated = DateTime.Now,
+                DisplayName = user.Email,
+                Email = user.Email,
+                IsActive = true
+            };
+            _userRepository.Create(myUser);
 
             return "It is OK";
 
         }
+
+        [Authorize(Roles ="Admin,User")]
+        public String Test()
+        {
+            return "GG WP";
+        }
+
+
+
+
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {
