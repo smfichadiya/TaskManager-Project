@@ -14,7 +14,7 @@ namespace TaskManagerProject.Domain.Entities
         public bool IsVisible { get; set; }
 
         public virtual int UserId { get; set; }
-        public virtual User User { get; set; }
+        public virtual MyUser User { get; set; }
     }
 
     public enum WidgetSize

@@ -12,7 +12,7 @@ namespace TaskManagerProjectApp.Controllers
     public class UsersController : Controller
     {
         IUserRepository _userRepository = new UserRepository();
-        // GET: Users
+        // GET: MyUsers
         public ActionResult Index()
         {
             var users = _userRepository.GetAll();

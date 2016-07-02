@@ -9,7 +9,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 { 
     public class TaskRepository : ITaskRepository
     {
-        Database db = new Database();
+        MyDatabase db = new MyDatabase();
         IProjectRepository _projectRepsitory = new ProjectRepository();
         IUserRepository _userRepository = new UserRepository();
 
@@ -18,7 +18,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             return "hajan1";
         }
 
-        public bool Create(Task task)
+        public bool Create(MyTask task)
         {
             //in what project this task belongs?
             if (task.ProjectId <= 0)
@@ -48,7 +48,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             return true;
         }
 
-        public List<Task> GetAll()
+        public List<MyTask> GetAll()
         {
             return db.Tasks.ToList();
         }
@@ -63,7 +63,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             return dbTask.User.DisplayName + "(" + dbTask.User.Email + ")";
         }
 
-        public Task GetById(int id)
+        public MyTask GetById(int id)
         {
             return GetAll().FirstOrDefault(x => x.ID == id);
         }
@@ -78,7 +78,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
                 return new List<TaskComment>();
         }
 
-        public bool Update(Task task)
+        public bool Update(MyTask task)
         {
             var dbTask = GetById(task.ID);
 

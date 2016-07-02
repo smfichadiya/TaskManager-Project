@@ -10,7 +10,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 {
     public class DashboardWidgetRepository : IDashboardWidgetRepository
     {
-        Database db = new Database();
+        MyDatabase db = new MyDatabase();
         
         public IQueryable<DashboardWidget> GetAll(int userId)
         {
