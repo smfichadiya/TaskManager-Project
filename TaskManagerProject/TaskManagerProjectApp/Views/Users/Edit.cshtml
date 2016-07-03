@@ -17,9 +17,37 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
 
-     
-        <input type="checkbox" name="ProjectId" value="1" />1
-        <input type="checkbox" name="ProjectId" value="1" />2
+
+        <h2>@Model.Email</h2>
+
+        <input type="hidden" name="ID" value="@Model.ID"/>
+
+        @foreach (var project in ViewBag.projects)
+        {
+            <div class="well">
+                <h4>@project.Name</h4>
+                @foreach (var task in project.Tasks)
+                {
+                    <div class="alert alert-info">
+                        @if (task.UserId == Model.ID)
+                        {
+                            <input type="checkbox" name="taskIds" value="@task.ID" checked /> @task.Name
+                        }
+                        else if(task.UserId==null)
+                        {
+                            <input type="checkbox" name="taskIds" value="@task.ID"/> @task.Name
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="taskIds" value="@task.ID" disabled /> @task.Name
+                          
+                        }
+
+
+                    </div>
+                }
+            </div>
+        }
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

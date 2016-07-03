@@ -62,5 +62,31 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             db.SaveChanges();
             return true;
         }
+
+        public MyUser Update(int ID, List<int> taskIds)
+        {
+            var dbUser = GetById(ID);
+           
+            foreach(var task in dbUser.Tasks)
+            {
+                db.Tasks.FirstOrDefault(t => t.ID == task.ID).UserId = null;
+            }
+            db.SaveChanges();
+
+
+            if (taskIds == null)
+            {
+                dbUser.Tasks = null;
+            }            
+            else
+            {
+                var tasks = db.Tasks.Where(t => taskIds.Contains(t.ID)).ToList();
+                dbUser.Tasks = tasks;
+            }
+           
+            db.SaveChanges();
+
+            return dbUser;
+        }
     }
 }

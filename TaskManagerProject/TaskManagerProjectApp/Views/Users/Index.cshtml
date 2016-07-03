@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<TaskManagerProject.Domain.Entities.MyUser>
+@using TaskManagerProject.Domain.Entities;
 
 @{
     ViewBag.Title = "ActivateUser";
@@ -17,10 +18,11 @@
         </th>
       
         <th>
-            @Html.DisplayNameFor(model => model.DisplayName)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.AppUserId)
+        </th>
+
+        <th>
+           Projects (Tasks)
         </th>
         <th>
 
@@ -42,18 +44,21 @@
            
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
-            </td>
-           
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </td>
+            </td>                      
 
              <td>
                 @Html.DisplayFor(modelItem => item.AppUserId)
             </td>
 
+            
             <td>
-                <a class="btn btn-warning btn-edit" href="/Users/Edit" userId="@item.ID"> Edit </a>
+               @Html.Raw(GetProjectWithTasks(item))
+            </td>
+
+           
+
+            <td>
+                <a class="btn btn-warning btn-edit" href="/Users/Edit/@item.ID" userId="@item.ID"> Edit </a>
             </td>
 
             <td>
@@ -93,6 +98,31 @@
         </script>
     }
 
+@functions{
+    public string GetProjectWithTasks(MyUser user)
+    {
+        var projectsGrouped = user.Tasks.GroupBy(item => item.ProjectId).Select(group => new { ProjectID = group.Key, ProjectName=group.First().Project.Name, Items = group.ToList() })
+.ToList();
+
+        string result = "";
+        foreach(var neso in projectsGrouped)
+        {
+            string span = "<span><b>Project</b>:";
+            span += "<a href='/Projects/Details/"+neso.ProjectID+"'>"+ neso.ProjectName+"</a> <b>Tasks</b>:(";
+
+            List<string> links = new List<string>();
+            foreach(var nesoDrugo in neso.Items)
+            {
+                links.Add("<a href='/Tasks/Details/" + nesoDrugo.ID + "'>" + nesoDrugo.Name+"</a>");
+            }
+            span += string.Join(", ", links);
+            span += ")</span><br>";
+
+            result += span;
+        }
+        return result;
+    }
+}
 
 
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using TaskManagerProject.Domain.Entities;
 
 namespace TaskManagerProjectApp.Models
 {
@@ -41,13 +42,13 @@ namespace TaskManagerProjectApp.Models
             public bool RememberMe { get; set; }
         }
 
-            public class ForgotPasswordViewModel
-            {
-                [Required]
-                [DataType(DataType.EmailAddress)]
-                [Display(Name ="Email")]
-                public string Email { get; set; }
-            }
+        public class ForgotPasswordViewModel
+        {
+            [Required]
+            [DataType(DataType.EmailAddress)]
+            [Display(Name ="Email")]
+            public string Email { get; set; }
+        }
 
         public class ResetPasswordViewModel
         {
@@ -69,5 +70,12 @@ namespace TaskManagerProjectApp.Models
 
             public string Code { get; set; }
     }
+
+    public class EditUserViewModel
+    {
+        public int ID { get; set; }
+        public List<int> TaskIds { get; set; }
+    }
+
 
 }

@@ -9,6 +9,8 @@ namespace TaskManagerProject.Domain.Interfaces
 {
     public interface IUserRepository : IGenericRepository<MyUser>
     {
-         MyUser GetByAppUserId(String id);
+        MyUser GetByAppUserId(String id);
+
+        MyUser Update(int ID, List<int> taskIds);
     }
 }

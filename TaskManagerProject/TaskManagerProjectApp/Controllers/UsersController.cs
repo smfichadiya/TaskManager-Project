@@ -20,6 +20,7 @@ namespace TaskManagerProjectApp.Controllers
     public class UsersController : Controller
     {
         IUserRepository _userRepository = new UserRepository();
+        IProjectRepository _projectsRepository = new ProjectRepository();
 
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManger;
@@ -123,11 +124,24 @@ namespace TaskManagerProjectApp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            return View();
+            var user = _userRepository.GetById(id);
+            var projects = _projectsRepository.GetAll();
+            ViewBag.projects = projects;
+            return View(user);
         }
-      
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditUserViewModel user)
+        {
+            var dbUser = _userRepository.Update(user.ID,user.TaskIds);
+
+            return RedirectToAction("Edit");
+        }
+
 
         private void AddErrors(IdentityResult result)
         {
