@@ -143,6 +143,15 @@ namespace TaskManagerProjectApp.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult ShowReport()
+        {
+            var users = _userRepository.GetAll().OrderByDescending(u => u.Tasks.Count);
+
+            return View(users);
+        }
+
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)

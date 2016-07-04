@@ -10,5 +10,6 @@ namespace TaskManagerProject.Domain.Interfaces
     {
         List<TaskComment> GetComments(int taskId);
         string GetAssigneeName(int taskId);
+        bool ChangeStatusOfTask(int taskId, StatusOfTask newStatus);
     }
 }

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<TaskManagerProject.Domain.Entities.MyUser>
+
+@{
+    ViewBag.Title = "ShowReport";
+}
+
+<h2>ShowReport</h2>
+
+
+<table class="table">
+    <tr>
+          
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </th>
+
+        <th>
+            Number of Tasks
+        </th>
+
+        <th>
+           Tasks
+        </th>
+       
+      
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+       
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </td>
+
+        <td>
+           @item.Tasks.Count
+        </td>
+
+        <td>
+           @foreach(var task in item.Tasks)
+           {
+               <span>@task.Name</span><br />
+           }
+        </td>
+        
+       
+    </tr>
+}
+
+</table>

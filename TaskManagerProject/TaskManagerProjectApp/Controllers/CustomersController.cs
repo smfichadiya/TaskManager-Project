@@ -9,12 +9,14 @@ using TaskManagerProject.Domain.RepositoryEF.Repositories;
 
 namespace TaskManagerProjectApp.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     public class CustomersController : Controller
     {
         ICustomerRepository _customerRepository = new CustomerRepository();
         IProjectRepository _projectRepository = new ProjectRepository();
 
         // GET: Customers
+       
         public ActionResult Index()
         {
             var customers = _customerRepository.GetAll();
@@ -22,11 +24,13 @@ namespace TaskManagerProjectApp.Controllers
             return View(customers);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Create(Customer customer)
         {
@@ -39,11 +43,12 @@ namespace TaskManagerProjectApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             return View(_customerRepository.GetById(id));
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Edit(Customer customer)
         {
@@ -56,12 +61,12 @@ namespace TaskManagerProjectApp.Controllers
             return View(customer);
         }
 
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(Customer customer)
         {
             return View(_customerRepository.GetById(customer.ID));
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Delete(int id)
         {

@@ -12,6 +12,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
     {
         MyDatabase db = new MyDatabase();
         ICustomerRepository _customerRepository = new CustomerRepository();
+        IUserRepository _userRepository = new UserRepository();
 
         public bool Create(Project project)
         {
@@ -47,6 +48,28 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
         public List<Project> GetAll()
         {
             return db.Projects.ToList();
+        }
+
+        public List<Project> GetAllFromUser(string userId)
+        {
+            var user = _userRepository.GetByAppUserId(userId);
+
+            List<Project> result = new List<Project>();
+            List<int?> addedProjectsIds = new List<int?>();
+
+            foreach(var task in user.Tasks)
+            {
+                if (task.ProjectId == null)
+                    continue;
+
+                if (!addedProjectsIds.Contains(task.ProjectId))
+                {
+                    addedProjectsIds.Add(task.ProjectId);
+                    result.Add(task.Project);
+                }
+            }
+
+            return result;
         }
 
         public List<Project> GetByCustomerId(int id)

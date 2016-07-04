@@ -1,0 +1,181 @@
+﻿@model TaskManagerProject.Domain.Entities.Project
+@using TaskManagerProject.Domain.Entities;
+
+    @{
+        ViewBag.Title = "TaskDashboard";
+    }
+
+    <h2>TaskDashboard</h2>
+    
+<style>
+   
+</style>
+    <div class="row">
+        <div class="col-md-3">
+            <h2>To DO</h2>
+            <ul id="sortable0" class="connectedSortable">
+                @foreach (MyTask task in Model.Tasks)
+                {
+                    if (task.status == StatusOfTask.ToDo)
+                    {
+                        <li class="alert alert-danger" id="@task.ID" taskStatus="0">
+                            <h3>@task.Name</h3>
+                            <p>@task.Description</p>
+                            @if (task.UserId != null)
+                            {
+                                <h4>@task.User.DisplayName</h4>
+                            }
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+
+        <div class="col-md-3">
+            <h2>In Progress</h2>
+            <ul id="sortable1" class="connectedSortable">
+                @foreach (MyTask task in Model.Tasks)
+                {
+                    if (task.status == StatusOfTask.InProgress)
+                    {
+                        <li class="alert alert-info" id="@task.ID" taskStatus="1">
+                            <h3>@task.Name</h3>
+                            <p>@task.Description</p>
+                            @if (task.UserId != null)
+                            {
+                                <h4>@task.User.DisplayName</h4>
+                            }
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+
+        <div class="col-md-3">
+            <h2>In Testing</h2>
+            <ul id="sortable2" class="connectedSortable">
+                @foreach (MyTask task in Model.Tasks)
+                {
+                    if (task.status == StatusOfTask.InTesting)
+                    {
+                        <li class="alert alert-warning" id="@task.ID"  taskStatus="2">
+                            <h3>@task.Name</h3>
+                            <p>@task.Description</p>
+                            @if (task.UserId != null)
+                            {
+                                <h4>@task.User.DisplayName</h4>
+                            }
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+
+        <div class="col-md-3">
+            <h2>Done</h2>
+            <ul id="sortable3" class="connectedSortable">
+                @foreach (MyTask task in Model.Tasks)
+                {
+                    if (task.status == StatusOfTask.Done)
+                    {
+                        <li class="alert alert-success" id="@task.ID"  taskStatus="3">
+                            <h3>@task.Name</h3>
+                            <p>@task.Description</p>
+                            @if (task.UserId != null)
+                            {
+                                <h4>@task.User.DisplayName</h4>
+                            }
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+    </div>
+
+
+<style>
+   #sortable0, #sortable1, #sortable2,#sortable3 {
+        border: 1px solid #eee;
+        min-width: 300px;
+        min-height: 600px;
+        list-style-type: none;
+        margin: 0;
+        padding: 5px 0 0 0;
+        float: left;
+        margin-right: 10px;
+    }
+
+        #sortable0 li, #sortable1 li, #sortable2 li ,#sortable3 li {
+            cursor:move;
+            margin: 0 5px 5px 5px;
+            padding: 5px;
+            font-size: 1.2em;
+            /*width: 120px;*/
+        }
+
+</style>
+
+@section scripts{ 
+    <script>
+      $(function() {
+          $( "#sortable0, #sortable1, #sortable2, #sortable3" ).sortable({
+              connectWith: ".connectedSortable",
+              stop: function (event, ui) {
+                  var task = $(ui.item);
+                  var taskId = task.attr("id");
+                  var oldStatus = task.attr("taskStatus");
+
+                  var ulName = task.parent().attr("id");
+                  var newStatus = ulName.split("sortable")[1];
+
+                  //Task from Done can’t go back to any other status
+                  if (oldStatus == 3) {
+                      $("sortable"+ newStatus).sortable("cancel");
+                      return false;
+                  }
+
+                  //Task from To Do can go to In Progress or In Testing (QA) but not to Done             
+                  if (oldStatus == 0 && newStatus==3) {
+                      $("sortable" + newStatus).sortable("cancel");
+                      return false;
+                  }
+
+                  //Task from In Testing (QA) can go in To Do or Done , but not to In Progress
+                  if (oldStatus == 2 && newStatus == 1) {
+                      $("sortable" + newStatus).sortable("cancel");
+                      return false;
+                  }
+
+                  var url = "/Tasks/ChangeStatusOfTask"
+
+                  $.post(url, {taskId:taskId , newStatus:newStatus},function (result) {
+                      console.log(result);
+                      task.attr("taskStatus", newStatus);
+                      task.attr("class", GetClassFromStatus(newStatus));
+                  });
+                  console.log(oldStatus, newStatus, taskId);
+                
+              }
+          }).disableSelection();
+
+
+          function GetClassFromStatus(status) {
+              switch (status) {
+                  case "0": return "alert alert-danger";
+                  case "1": return "alert alert-info";
+                  case "2": return "alert alert-warning";
+                  case "3": return "alert alert-success";
+                  default: return "alert alert-success";
+              }
+          }
+      });
+
+     
+    </script>
+}
+
+

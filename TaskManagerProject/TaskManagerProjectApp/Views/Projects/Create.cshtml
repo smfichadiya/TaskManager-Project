@@ -29,6 +29,9 @@
                 @Html.DropDownList("CustomerId",null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
             </div>
+            <div class="col-md-2 col-md-offset-2">
+                @Html.ActionLink("Create Customer", "Create", "Customers")
+            </div>
         </div>
 
      

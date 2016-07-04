@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201606301200328_someName.Designer.cs">
       <DependentUpon>201606301200328_someName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607041059554_addedStatus.cs" />
+    <Compile Include="Migrations\201607041059554_addedStatus.Designer.cs">
+      <DependentUpon>201607041059554_addedStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606301200328_someName.resx">
       <DependentUpon>201606301200328_someName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607041059554_addedStatus.resx">
+      <DependentUpon>201607041059554_addedStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

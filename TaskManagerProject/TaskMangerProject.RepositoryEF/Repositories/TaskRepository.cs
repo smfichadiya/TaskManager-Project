@@ -91,6 +91,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             dbTask.Type = task.Type;
             dbTask.StartDateTime = task.StartDateTime;
             dbTask.EndDateTime = task.EndDateTime;
+            dbTask.status = task.status;
 
             //commit changes to database
             db.SaveChanges();
@@ -98,5 +99,14 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             return true;
         }
 
+        public bool ChangeStatusOfTask(int taskId, StatusOfTask newStatus)
+        {
+            var dbTask = GetById(taskId);
+            dbTask.status = newStatus;
+
+            db.SaveChanges();
+
+            return true;
+        }
     }
 }

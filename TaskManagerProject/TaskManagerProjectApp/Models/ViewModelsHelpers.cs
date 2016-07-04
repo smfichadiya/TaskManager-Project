@@ -77,5 +77,11 @@ namespace TaskManagerProjectApp.Models
         public List<int> TaskIds { get; set; }
     }
 
+    public class ChangeStatusViewModel
+    {
+        public StatusOfTask newStatus { get; set; }
+        public int TaskId { get; set; }
+    }
+
 
 }

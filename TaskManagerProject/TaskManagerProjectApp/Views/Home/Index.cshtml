@@ -3,46 +3,28 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Welcome to Home Page</h2>
-<style>
-  
-</style>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    @Html.Partial("_AdminPanel")
+}
+else if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+{
+    @Html.Partial("_UserPanel")
+}
+else
+{
+    <h2>Welcome to Home Page</h2>
 
-<div class="row">
-    <div class="col-md-3">
-        <a href="~/Customers">
-            <div class="alert alert-success text-center">
-                Customers
-            </div>
-        </a>
-    </div>
+    <span>
+        Login as adimn: admin@admin.com <br />
+        password : Admin123#
+            
+    </span>
+}
 
-    <div class="col-md-3">
-        <a href="~/Projects">
-            <div class="alert alert-success text-center">
-                Projects
-            </div>
-        </a>
-    </div>
 
-    <div class="col-md-3">
-        <a href="~/Tasks">
-            <div class="alert alert-success text-center">
-                Tasks
-            </div>
-        </a>
-    </div>
 
-    <div class="col-md-3">
-        <a href="~/Users">
-            <div class="alert alert-success text-center">
-                Users
-            </div>
-        </a>
-    </div>
 
-</div>
 
- 
 
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,13 +16,26 @@ namespace TaskManagerProjectApp.Controllers
         ICustomerRepository _customerRepository = new CustomerRepository();
 
         // GET: Projects
+        [Authorize]
         public ActionResult Index()
         {
-            var projects = _projectRepository.GetAll();
+            List<Project> projects;
+
+            if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                 projects = _projectRepository.GetAll();
+            }
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                projects = _projectRepository.GetAllFromUser(userId);
+            }
+            
 
             return View(projects);
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             //usseless
@@ -31,6 +45,7 @@ namespace TaskManagerProjectApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Create(Project project)
         {
@@ -42,12 +57,13 @@ namespace TaskManagerProjectApp.Controllers
 
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(Project project)
         {
             return View(_projectRepository.GetById(project.ID));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -58,12 +74,14 @@ namespace TaskManagerProjectApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             ViewBag.CustomerId = new SelectList(_customerRepository.GetAll(), "ID", "Name");
             return View(_projectRepository.GetById(id));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public ActionResult Edit(Project project)
         {
@@ -86,6 +104,13 @@ namespace TaskManagerProjectApp.Controllers
             }
             return RedirectToAction("Index");
 
+        }
+
+        public ActionResult TaskDashboard(int id)
+        {
+            var dbProject = _projectRepository.GetById(id);
+
+            return View(dbProject);
         }
     }
 }

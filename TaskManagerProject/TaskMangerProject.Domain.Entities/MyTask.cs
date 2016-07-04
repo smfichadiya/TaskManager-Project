@@ -15,6 +15,7 @@ namespace TaskManagerProject.Domain.Entities
         public DateTime? EndDateTime { get; set; }
 
         public TaskType Type { get; set; }
+        public StatusOfTask status { get; set; }
 
         public virtual ICollection<TaskComment> Comments { get; set; }
 
@@ -32,5 +33,13 @@ namespace TaskManagerProject.Domain.Entities
         ChangeRequest = 2,
         SupportRequest = 3
         //MyTask, Bug, ChangeRequest, SupportRequest
+    }
+
+    public enum StatusOfTask
+    {
+        ToDo = 0,
+        InProgress = 1,
+        InTesting = 2,
+        Done = 3
     }
 }
