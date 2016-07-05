@@ -1,7 +1,13 @@
-﻿body {
+﻿html {
+    height: 100%;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
+
+
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -16,3 +22,49 @@ textarea {
     max-width: 280px;
 }
 
+
+/* side bar */
+@media(min-width:768px) {
+    .body-content {
+        margin-left: 185px !important;
+    }
+
+    .side-nav {
+        position: fixed;
+        top: 50px;
+        left: 0px;
+        width: 185px;
+        border: none;
+        border-radius: 0;
+        overflow-y: auto;
+        background-color: #222;
+        bottom: 0;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+    }
+
+        .side-nav > li > a {
+            width: 225px;
+        }
+
+        .side-nav li a:hover,
+        .side-nav li a:focus {
+            outline: none;
+            background-color: #000 !important;
+        }
+}
+
+.side-nav > li > ul {
+    padding: 0;
+}
+
+    .side-nav > li > ul > li > a {
+        display: block;
+        padding: 10px 15px 10px 38px;
+        text-decoration: none;
+        color: #999;
+    }
+
+        .side-nav > li > ul > li > a:hover {
+            color: #fff;
+        }

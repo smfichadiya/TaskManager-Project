@@ -14,14 +14,14 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("TaskManager Project", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                
             </div>
             <div class="navbar-collapse collapse">
@@ -29,13 +29,39 @@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                <li class="active">
+                    <a href="/Home/Index"><span class="glyphicon glyphicon-home"></span> Home</a>
+                </li>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a href="/Home/AdminPanel"><span class="glyphicon glyphicon-lock"></span> Admin Panel</a>
+                    </li>
+                }
+                else if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                {
+                    <li>
+                        <a href="/Home/UserPanel"><span class="glyphicon glyphicon-inbox"></span> User Panel</a>
+                    </li>
+                }
+
+                <li>
+                    <a href="/Projects/index"><span class="glyphicon glyphicon-th-large"></span> Projects</a>
+                </li>
+                <li>
+                    <a href="/Users/ShowReport"><span class="glyphicon glyphicon-stats"></span> Reports</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <footer class="text-center">
+            <p>&copy; @DateTime.Now.Year - Mvc Project - Task Management Application</p>
         </footer>
     </div>
 

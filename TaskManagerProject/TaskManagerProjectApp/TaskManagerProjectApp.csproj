@@ -246,10 +246,10 @@
     <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
-    <Content Include="Views\Home\_AdminPanel.cshtml" />
     <Content Include="Views\Users\ShowReport.cshtml" />
-    <Content Include="Views\Home\_UserPanel.cshtml" />
     <Content Include="Views\Projects\TaskDashboard.cshtml" />
+    <Content Include="Views\Home\AdminPanel.cshtml" />
+    <Content Include="Views\Home\UserPanel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

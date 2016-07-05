@@ -20,6 +20,12 @@ namespace TaskManagerProjectApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin,User")]
+        public ActionResult UserPanel()
+        {
+            return View();
+        }
+
 
 
     }

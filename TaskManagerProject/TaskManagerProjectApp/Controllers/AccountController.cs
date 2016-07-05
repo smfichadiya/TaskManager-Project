@@ -320,7 +320,7 @@ namespace TaskManagerProjectApp.Controllers
             };
             _userRepository.Create(myUser);
 
-            return "It is OK";
+            return "Admin CREATED SUCCESSFULY";
 
         }
 

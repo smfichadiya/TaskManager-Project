@@ -3,24 +3,35 @@
     ViewBag.Title = "Index";
 }
 
-@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-{
-    @Html.Partial("_AdminPanel")
-}
-else if (User.Identity.IsAuthenticated && User.IsInRole("User"))
-{
-    @Html.Partial("_UserPanel")
-}
-else
-{
-    <h2>Welcome to Home Page</h2>
 
-    <span>
-        Login as adimn: admin@admin.com <br />
-        password : Admin123#
-            
-    </span>
-}
+<h1 class="page-header">Welcome to our Task Management App</h1>
+<div class="row">
+    <div class="col-md-5">
+        <div class="well" style="height:250px;">
+            <p class="text-center">
+                <h3>Please <a href="/Account/Login">Log In </a>  to continue </h3>
+                <h3>If you are new User please <a href="/Account/Register"> Register here</a> </h3>
+                <h4>
+                    After you Register you have to wait to be approved by the administrator and your
+                    account will be activated
+                </h4>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-5 col-md-offset-1">
+        <div class="well" style="height:250px;">
+            <p class="text-center">
+                <h3>If you need a testing admin account click  <a href="/Account/AddAdmin">here</a>  </h3>
+                <h3> After that you can use this credentials to log-in:</h3>
+                <h4>Username: admin@admin.com</h4>
+                <h4>Password: Admin123#</h4>
+                   
+            </p>
+        </div>
+    </div>
+</div>
+
 
 
 
