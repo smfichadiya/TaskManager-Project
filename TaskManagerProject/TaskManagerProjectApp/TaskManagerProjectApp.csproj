@@ -250,6 +250,8 @@
     <Content Include="Views\Projects\TaskDashboard.cshtml" />
     <Content Include="Views\Home\AdminPanel.cshtml" />
     <Content Include="Views\Home\UserPanel.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Home\UnregisteredPanel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

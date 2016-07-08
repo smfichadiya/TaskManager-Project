@@ -33,9 +33,18 @@
 </div>
 
 
+@section scripts{ 
+    <script>
+        $(function () {
 
+            var items = $(".side-nav").find("li");
+            items.removeClass("active");
+            $(".li-home").addClass("active");
 
+        });
+    </script>
 
+}
 
 
 

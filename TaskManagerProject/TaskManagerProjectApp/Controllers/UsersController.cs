@@ -142,6 +142,38 @@ namespace TaskManagerProjectApp.Controllers
             return RedirectToAction("Edit");
         }
 
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(MyUser myUser)
+        {
+            var dbUser = _userRepository.GetById(myUser.ID);
+                   
+            var rolesForUser = UserManager.GetRoles(dbUser.AppUserId);
+          
+
+            if (rolesForUser.Contains("Admin"))
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(_userRepository.GetById(myUser.ID));
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var dbUser = _userRepository.GetById(id);
+
+            if (_userRepository.Delete(id))
+            {
+                UserManager.RemoveFromRole(dbUser.AppUserId, "User");
+                return RedirectToAction("Index");
+            }
+               
+
+            return View();
+        }
 
         [Authorize(Roles = "Admin")]
         public ActionResult ShowReport()

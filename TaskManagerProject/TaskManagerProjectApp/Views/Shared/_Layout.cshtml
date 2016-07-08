@@ -31,29 +31,49 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li class="active">
-                    <a href="/Home/Index"><span class="glyphicon glyphicon-home"></span> Home</a>
-                </li>
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                 {
-                    <li>
+                    <li class="li-adminPanel">
                         <a href="/Home/AdminPanel"><span class="glyphicon glyphicon-lock"></span> Admin Panel</a>
+                    </li>
+
+                    <li class="li-Projects">
+                        <a href="/Projects/index"><span class="glyphicon glyphicon-th-large"></span> Projects</a>
+                    </li>
+
+                    <li class="li-Tasks">
+                        <a href="/Tasks/index"><span class="glyphicon glyphicon-th-large"></span> Tasks</a>
+                    </li>
+               
+
+                    <li class="li-manage">
+                        <a href="~/Users/Index"><span class="glyphicon glyphicon-user"></span>Manage Users</a>
+                    </li>
+
+                    <li class="li-Reports">
+                        <a href="/Users/ShowReport"><span class="glyphicon glyphicon-stats"></span> Reports</a>
                     </li>
                 }
                 else if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                 {
-                    <li>
+                    <li class="li-userPanel">
                         <a href="/Home/UserPanel"><span class="glyphicon glyphicon-inbox"></span> User Panel</a>
+                    </li>
+
+                    <li class="li-Projects">
+                        <a href="/Projects/index"><span class="glyphicon glyphicon-th-large"></span> Projects</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="li-home">
+                        <a href="/Home/Index"><span class="glyphicon glyphicon-home"></span> Home</a>
                     </li>
                 }
 
-                <li>
-                    <a href="/Projects/index"><span class="glyphicon glyphicon-th-large"></span> Projects</a>
-                </li>
-                <li>
-                    <a href="/Users/ShowReport"><span class="glyphicon glyphicon-stats"></span> Reports</a>
-                </li>
+
             </ul>
+
         </div>
     </div>
 
@@ -69,6 +89,8 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
 
-    @RenderSection("scripts", required: false);
+    @RenderSection("scripts", required: false)
+  
+   
 </body>
 </html>

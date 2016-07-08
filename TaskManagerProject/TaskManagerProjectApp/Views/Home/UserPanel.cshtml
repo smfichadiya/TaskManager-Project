@@ -1,5 +1,56 @@
-﻿<h2>Welcome to User Panel</h2>
+﻿<h1 class="page-header">Welcome to User Panel</h1>
+<div class="row">
+    <div class="col-md-5">
+        <div class="panel panel-primary" >
+            <div class="panel-heading">
+                <h3 class="panel-title"><a href="/Projects/Index">Check your Projects</a></h3>
+            </div>
+            <div class="panel-body">
+                <h3>
+                    The Projects you have tasks assigned to and are currently
+                    working on can be checked <a href="/Projects/Index"> here</a>.
+                </h3>
+                <br /><br /><br />
+            </div>
+        </div>
+    </div>
 
-<a href="/Projects/Index">See All Your Projects</a>
+    <div class="col-md-5 col-md-offset-1">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"> Check Task Dashboard of Project</h3>
+            </div>
+            <div class="panel-body">
+                <h3>
+                    Select the project you want to see the Task Dashboard:
+                </h3>
+              
+                @Html.DropDownList("ProjectId", null, htmlAttributes: new { @class = "form-control", @id = "projectDropDown" })
+                <br />
+                <button class="btn btn-primary pull-right" id="continueBtn"> Continue</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
+
+@section scripts{
+    <script>
+        $(function () {
+
+            var items = $(".side-nav").find("li");
+            items.removeClass("active");
+            $(".li-userPanel").addClass("active");
+
+            $("#continueBtn").on("click", function () {
+                var ddValue = $("#projectDropDown").val();
+                //console.log(ddValue);
+                window.location.replace("/Projects/TaskDashboard/"+ddValue);
+            });
+
+        });
+    </script>
+
+}

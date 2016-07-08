@@ -16,7 +16,7 @@ namespace TaskManagerProjectApp.Controllers
         ICustomerRepository _customerRepository = new CustomerRepository();
 
         // GET: Projects
-        [Authorize]
+        [Authorize(Roles ="Admin,User")]
         public ActionResult Index()
         {
             List<Project> projects;

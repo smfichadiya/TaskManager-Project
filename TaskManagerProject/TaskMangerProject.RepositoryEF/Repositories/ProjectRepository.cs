@@ -37,7 +37,21 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
             if(dbProject != null)
             {
-                dbProject.IsActive = false;
+               var tasksToBeDeleted = new List<int>();
+
+               foreach(MyTask task in dbProject.Tasks)
+                {
+                    tasksToBeDeleted.Add(task.ID);              
+                }    
+
+               foreach(int taskId in tasksToBeDeleted)
+                {
+                    var dbTask = db.Tasks.FirstOrDefault(t => t.ID == taskId);
+                    db.Tasks.Remove(dbTask);
+                }  
+
+                db.Projects.Remove(dbProject);
+
                 db.SaveChanges();
                 return true;
             }

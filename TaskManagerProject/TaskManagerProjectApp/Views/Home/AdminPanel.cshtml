@@ -1,45 +1,62 @@
 ﻿
 
-<h2>Welcome to Admin Panel</h2>
-<style>
+<h2 class="page-header">Welcome to Admin Panel</h2>
 
-</style>
 
-<div class="row">
-    <div class="col-md-3">
-        <a href="~/Customers">
-            <div class="alert alert-success text-center">
-                Customers
-            </div>
-        </a>
+    <div class="row">
+        <div class="col-xs-6">
+            <a href="~/Customers" style="text-decoration:none">
+                <div class="alert alert-success text-center">
+                   <h2>Customers</h2>
+                    <p>View and Edit your Customers </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-xs-6">
+            <a href="~/Projects" style="text-decoration:none">
+                <div class="alert alert-success text-center">
+                    <h2>Projects</h2>
+                    <p>View and Edit the Project registered on the System </p>
+                </div>
+            </a>
+        </div>
     </div>
 
-    <div class="col-md-3">
-        <a href="~/Projects">
-            <div class="alert alert-success text-center">
-                Projects
-            </div>
-        </a>
+    <div class="row">
+        <div class="col-xs-6">
+            <a href="~/Tasks" style="text-decoration:none">
+                <div class="alert alert-success text-center">
+                    <h2>Tasks</h2>
+                    <p>View and Edit the Tasks from the Projects </p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="~/Users" style="text-decoration:none">
+                <div class="alert alert-success text-center">
+                    <h2>Users</h2>
+                    <p>View and Edit your Users </p>
+                </div>
+            </a>
+        </div>
     </div>
 
-    <div class="col-md-3">
-        <a href="~/Tasks">
-            <div class="alert alert-success text-center">
-                Tasks
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md-3">
-        <a href="~/Users">
-            <div class="alert alert-success text-center">
-                Users
-            </div>
-        </a>
-    </div>
-
-</div>
 
 
 
 
+
+@section scripts{
+    <script>
+        $(function () {
+
+            var items = $(".side-nav").find("li");
+            items.removeClass("active");
+            $(".li-adminPanel").addClass("active");
+
+        });
+    </script>
+
+}

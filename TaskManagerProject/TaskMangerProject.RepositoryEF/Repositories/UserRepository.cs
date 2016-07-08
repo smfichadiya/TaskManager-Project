@@ -36,7 +36,16 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            var dbUser = GetById(id);
+
+            foreach (MyTask t in dbUser.Tasks)
+            {
+                t.User = null;
+            }
+            dbUser.IsActive = false;
+
+            db.SaveChanges();
+            return true;
         }
 
         public List<MyUser> GetAll()

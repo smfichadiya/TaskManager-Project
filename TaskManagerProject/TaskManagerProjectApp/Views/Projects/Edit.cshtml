@@ -4,14 +4,14 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2 class="page-header">Edit Project</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+
+    <div class="form-horizontal alert alert-warning">
         <h4>Project</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -44,18 +44,59 @@
         </div>
 
 
+
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h3> Tasks Assigned to this project</h3>
+            </div>
+
+            @foreach (var task in Model.Tasks)
+            {
+                <div class="col-md-3">
+
+                    <div class="well" id="@task.ID" taskStatus="3" style="min-height:250px;">
+                        <label>Task name:</label><a href="/Tasks/Details/@task.ID" class="pull-right">@task.Name</a><br />
+
+                        <label>Task type:</label><span class="pull-right">@task.Type</span><br />
+                        <label>Task Status:</label><span class="pull-right">@task.status</span><br />
+                        @if (task.UserId != null)
+                        {
+                            <label>Assigned to:</label><a href="/Users/Edit/@task.UserId" class="pull-right">@task.User.DisplayName</a> <br />
+
+                        }
+
+                        <label>Task description:</label>
+                        <br />
+                        <span>@task.Description</span><br />
+                        <a class="btn btn-danger btn-sm" href="/Tasks/Delete/@task.ID">Delete</a>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+
     </div>
 }
 
+
+
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-info" }) |
+    @Html.ActionLink("Add Tasks", "Create", "Tasks", null, new { @class = "btn btn-primary" })
+
+
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+

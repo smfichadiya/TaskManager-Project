@@ -171,7 +171,13 @@ namespace TaskManagerProjectApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        [Authorize]
+        [HttpGet]
+        public ActionResult LogInAsAdmin()
+        {
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Login");
+        }
         //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
@@ -298,27 +304,28 @@ namespace TaskManagerProjectApp.Controllers
                 user = new AppUser { UserName = name, Email = name };
                 var result = UserManager.Create(user, password);
                 result = UserManager.SetLockoutEnabled(user.Id, false);
+
+
+                // Add user admin to Role Admin if not already added
+                var rolesForUser = UserManager.GetRoles(user.Id);
+                if (!rolesForUser.Contains(role.Name))
+                {
+                    var resultRole = UserManager.AddToRole(user.Id, role.Name);
+                }
+
+                user.EmailConfirmed = true;
+                UserManager.Update(user);
+
+                var myUser = new MyUser
+                {
+                    AppUserId = user.Id,
+                    DateCreated = DateTime.Now,
+                    DisplayName = user.Email,
+                    Email = user.Email,
+                    IsActive = true
+                };
+                _userRepository.Create(myUser);
             }
-
-            // Add user admin to Role Admin if not already added
-            var rolesForUser = UserManager.GetRoles(user.Id);
-            if (!rolesForUser.Contains(role.Name))
-            {
-                var result = UserManager.AddToRole(user.Id, role.Name);
-            }
-
-            user.EmailConfirmed = true;
-            UserManager.Update(user);
-
-            var myUser = new MyUser
-            {
-                AppUserId = user.Id,
-                DateCreated = DateTime.Now,
-                DisplayName = user.Email,
-                Email = user.Email,
-                IsActive = true
-            };
-            _userRepository.Create(myUser);
 
             return "Admin CREATED SUCCESSFULY";
 

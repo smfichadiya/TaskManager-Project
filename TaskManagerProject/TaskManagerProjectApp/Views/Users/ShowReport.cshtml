@@ -4,7 +4,7 @@
     ViewBag.Title = "ShowReport";
 }
 
-<h2>ShowReport</h2>
+<h2>Showing Report for Users</h2>
 
 
 <table class="table">
@@ -46,7 +46,7 @@
         <td>
            @foreach(var task in item.Tasks)
            {
-               <span>@task.Name</span><br />
+               <a href="/Tasks/Details/@task.ID">@task.Name</a><br />
            }
         </td>
         
@@ -55,3 +55,15 @@
 }
 
 </table>
+@section scripts{
+    <script>
+        $(function () {
+
+            var items = $(".side-nav").find("li");
+            items.removeClass("active");
+            $(".li-Reports").addClass("active");
+
+        });
+    </script>
+
+}

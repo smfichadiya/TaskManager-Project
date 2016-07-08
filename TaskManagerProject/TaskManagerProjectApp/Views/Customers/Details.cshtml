@@ -4,12 +4,11 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="page-header">Showing Details for Customer</h2>
 
 <div>
-    <h4>Customer</h4>
-    <hr />
-    <dl class="dl-horizontal">
+ 
+    <dl class="dl-horizontal alert alert-info">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -52,14 +51,24 @@
 
     </dl>
 </div>
-ALl projects by user;
-    @foreach(var item in Model.Projects)
+<div class="row">
+    <div class="col-xs-12">
+        <h3> All Projects by this Customer</h3>
+    </div>
+
+    @foreach (var project in Model.Projects)
     {
-        <div class="well">
-            @item.Name
-            <a href="~/Projects/Details/@item.ID">View Details of project</a>
+        <div class="col-md-3">
+
+            <div class="well" id="@project.ID">
+                <label>Project name:</label><a href="~/Projects/Details/@project.ID" class="pull-right">@project.Name</a><br />
+                <label>Date Created:</label><span class="pull-right">@project.DateCreated</span><br />
+            </div>
+
         </div>
     }
+</div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")

@@ -4,22 +4,20 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2 class="page-header">Showing Deatails for Project</h2>
 
-<div>
-    <h4>Project</h4>
-    <hr />
+<div class="alert alert-info">
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Customer.Name)
+            Customer Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Customer.Name)
+          @Html.ActionLink(Model.Customer.Name,"Details","Customers",new { id = Model.CustomerId },null)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            Project Name
         </dt>
 
         <dd>
@@ -45,15 +43,36 @@
     </dl>
 </div>
 
-ALl Tasks bt this Project;
-@foreach (var item in Model.Tasks)
-{
-    <div class="well">
-        @item.Name
-        <a href="~/Tasks/Details/@item.ID">View Details of Task</a>
+<div class="row">
+    <div class="col-xs-12">
+        <h3> Tasks Assigned to this project</h3>
     </div>
-}
+
+    @foreach (var task in Model.Tasks)
+    {
+        <div class="col-md-3">
+            
+                <div class="well" id="@task.ID" taskStatus="3">
+                    <label>Task name:</label><a href="/Tasks/Details/@task.ID" class="pull-right">@task.Name</a><br />
+
+                    <label>Task type:</label><span class="pull-right">@task.Type</span><br />
+                    <label>Task Status:</label><span class="pull-right">@task.status</span><br />
+                    @if (task.UserId != null)
+                {
+                        <label>Assigned to:</label><a href="/Users/Edit/@task.UserId" class="pull-right">@task.User.DisplayName</a> <br />
+
+                    }
+
+                    <label>Task description:</label>
+                    <br />
+                    <span>@task.Description</span><br />
+                </div>
+           
+        </div>
+    }
+</div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class = "btn btn-warning" }) |
+    @Html.ActionLink("Back to List", "Index",null, new { @class = "btn btn-info" }) | 
+    @Html.ActionLink("See Dashboard", "TaskDashboard", new { id = Model.ID }, new { @class = "btn btn-success" })
 </p>

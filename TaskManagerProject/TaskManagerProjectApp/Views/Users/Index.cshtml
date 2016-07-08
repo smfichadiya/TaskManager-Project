@@ -5,7 +5,7 @@
     ViewBag.Title = "ActivateUser";
 }
 
-<h2>All Users</h2>
+<h2 class="page-header">All Users Registered </h2>
 
 <p>
     @Html.ActionLink("Create New", "Create",null,new { @class="btn btn-info"})
@@ -35,7 +35,7 @@
             @Html.DisplayNameFor(model => model.IsActive)
         </th>
         
-        <th></th>
+        <th colspan="2" class="text-center">Actions</th>
     </tr>
 
     @foreach (var item in Model)
@@ -75,6 +75,9 @@
                 }
                
             </td>
+            <td>            
+                 <a class="btn btn-danger" href="/Users/Delete/@item.ID"> Delete </a>       
+            </td>
         </tr>
     }
 
@@ -94,6 +97,11 @@
                     });
                     console.log(userId);
                 });
+
+                var items = $(".side-nav").find("li");
+                items.removeClass("active");
+                $(".li-manage").addClass("active");
+                
             });
         </script>
     }
@@ -101,6 +109,10 @@
 @functions{
     public string GetProjectWithTasks(MyUser user)
     {
+        if(user.Tasks == null)
+        {
+            return "";
+        }
         var projectsGrouped = user.Tasks.GroupBy(item => item.ProjectId).Select(group => new { ProjectID = group.Key, ProjectName=group.First().Project.Name, Items = group.ToList() })
 .ToList();
 

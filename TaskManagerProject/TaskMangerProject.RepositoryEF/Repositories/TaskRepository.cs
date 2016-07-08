@@ -25,6 +25,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
                 return false;
 
             task.DateCreated = DateTime.Now;
+           
 
             //adding the task to DB collection
             db.Tasks.Add(task);
@@ -92,7 +93,8 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             dbTask.StartDateTime = task.StartDateTime;
             dbTask.EndDateTime = task.EndDateTime;
             dbTask.status = task.status;
-
+            dbTask.ProjectId = task.ProjectId;
+            
             //commit changes to database
             db.SaveChanges();
 
@@ -110,3 +112,7 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
         }
     }
 }
+
+
+
+

@@ -4,13 +4,12 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2 class="page-header">Delete</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Task</h4>
-    <hr />
-    <dl class="dl-horizontal">
+   
+    <dl class="dl-horizontal alert alert-danger">
         <dt>
             @Html.DisplayNameFor(model => model.Project.Name)
         </dt>
@@ -105,8 +104,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Back to List", "Index",null,new {@class = "btn btn-info" })
         </div>
     }
 </div>
