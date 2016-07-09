@@ -110,6 +110,48 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
 
             return true;
         }
+
+        public List<MyTask> GetAllFromUser(string userId)
+        {
+            return db.Tasks.Where(t => t.User.AppUserId == userId).ToList();
+        }
+
+        public bool AddComment(int taskId, int userId, string comment)
+        {
+            string userEmail = _userRepository.GetById(userId).Email;
+
+            TaskComment taskComment = new TaskComment
+            {
+                Comment = comment,
+                TaskId = taskId,
+                UserId = userId,
+                userEmail = userEmail
+            };
+
+            db.Tasks.FirstOrDefault(t => t.ID == taskId).Comments.Add(taskComment);
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public List<TaskComment> GetAllCommentsOfTask(int taskId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TaskComment GetCommentById(int commentId,int taskId)
+        {
+            return db.Tasks.FirstOrDefault(t => t.ID == taskId).Comments.FirstOrDefault(c => c.ID == commentId);
+        }
+
+        public bool DeleteComment(string comment, int commentId, int taskId)
+        {
+            var dbComment = GetCommentById(commentId, taskId);
+            db.Tasks.FirstOrDefault(t => t.ID == taskId).Comments.Remove(dbComment);
+            db.SaveChanges();
+
+            return true;
+        }
     }
 }
 

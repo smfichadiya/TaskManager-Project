@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,7 @@ using TaskManagerProjectApp.Models;
 
 namespace TaskManagerProjectApp.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     public class TasksController : Controller
     {
         ITaskRepository _taskRepository = new TaskRepository();
@@ -19,7 +21,18 @@ namespace TaskManagerProjectApp.Controllers
         // GET: Tasks
         public ActionResult Index()
         {
-            var tasks = _taskRepository.GetAll();
+            List<MyTask> tasks;
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                tasks = _taskRepository.GetAll();
+            }
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                tasks = _taskRepository.GetAllFromUser(userId);
+            }
+           
             return View(tasks);
         }
 
@@ -92,6 +105,7 @@ namespace TaskManagerProjectApp.Controllers
             var dbTask = _taskRepository.GetById((int)id);
             if (dbTask != null)
             {
+                ViewBag.userLogged = _userRepository.GetByAppUserId(User.Identity.GetUserId());
                 return View(dbTask);
             }
             return RedirectToAction("Index");
@@ -104,6 +118,30 @@ namespace TaskManagerProjectApp.Controllers
             bool result = _taskRepository.ChangeStatusOfTask(model.TaskId, model.newStatus);
 
             return result == true ? Json("true") : Json("false");
+        }
+
+        [HttpPost]
+        public ActionResult PostComment(int taskId, int userId, string comment)
+        {
+            bool result = _taskRepository.AddComment(taskId, userId, comment);
+
+            return RedirectToAction("Details", new { id = taskId });
+        }
+
+        [HttpGet]
+        public ActionResult DeleteComment(int commentId,int taskId)
+        {
+            var comment = _taskRepository.GetCommentById(commentId,taskId);
+            ViewBag.taskId = taskId;
+            return View(comment);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteComment(string comment, int commentId, int taskId)
+        {
+            bool result = _taskRepository.DeleteComment(comment, commentId, taskId);
+
+            return RedirectToAction("Details", new { id = taskId });
         }
     }
 }

@@ -26,9 +26,6 @@ namespace TaskManagerProject.Domain.RepositoryEF
         public DbSet<Project> Projects { get; set; }
         public DbSet<MyUser> MyUsers { get; set; }
         public DbSet<Customer> Customers { get; set; }
-
-        public DbSet<DashboardWidget> DashboardWidgets { get; set; }
-
         
     }
 }

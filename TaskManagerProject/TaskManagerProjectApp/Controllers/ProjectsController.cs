@@ -10,6 +10,7 @@ using TaskManagerProject.Domain.RepositoryEF.Repositories;
 
 namespace TaskManagerProjectApp.Controllers
 {
+    [Authorize(Roles = "Admin,User")]
     public class ProjectsController : Controller
     {
         IProjectRepository _projectRepository = new ProjectRepository();

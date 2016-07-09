@@ -104,3 +104,50 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <div>
+            <h2>Coomment List</h2>
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="media">
+                    <div class="media-body well">
+                        <h5 class="media-heading">
+                           Comment By: <b> @comment.userEmail </b>
+                            @if (comment.UserId == ViewBag.userLogged.ID || User.IsInRole("Admin"))
+                            {
+                                <a href="~/Tasks/DeleteComment?commentId=@comment.ID&taskId=@Model.ID" class="pull-right label label-danger">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            }
+                          
+                        </h5>
+                        @comment.Comment
+                    </div>
+                
+                   
+                </div>
+
+            }
+
+        </div>
+
+        <form method="post" action="~/Tasks/PostComment">
+
+            <input type="hidden" name="taskId" value="@Model.ID" />
+            <input type="hidden" name="userId" value="@ViewBag.userLogged.ID" />
+
+            <div class="form-group">
+                <label for="commentInput">Enter Comment as : @ViewBag.userLogged.Email</label>
+
+                <textarea class="form-control" rows="5" id="commentInput" name="comment"></textarea>
+            </div>
+
+           
+
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+</div>

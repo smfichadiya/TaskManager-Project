@@ -94,7 +94,6 @@
     <Compile Include="MyUser.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Project.cs" />
-    <Compile Include="DashboardWidget.cs" />
     <Compile Include="MyTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

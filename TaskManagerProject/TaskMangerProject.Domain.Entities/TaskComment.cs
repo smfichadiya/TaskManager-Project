@@ -12,9 +12,11 @@ namespace TaskManagerProject.Domain.Entities
         public string Comment { get; set; }
 
         public int? UserId { get; set; }
+        public string userEmail { get; set; }
+
         //public virtual MyUser MyUser { get; set; }
 
-        public virtual int TaskId { get; set; }
+        public virtual int? TaskId { get; set; }
         public virtual MyTask Task { get; set; }
     }
 }

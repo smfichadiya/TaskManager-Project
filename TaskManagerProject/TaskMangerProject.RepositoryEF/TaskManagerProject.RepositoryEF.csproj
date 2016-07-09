@@ -103,11 +103,22 @@
     <Compile Include="Migrations\201607041059554_addedStatus.Designer.cs">
       <DependentUpon>201607041059554_addedStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607091743245_delDashboard.cs" />
+    <Compile Include="Migrations\201607091743245_delDashboard.Designer.cs">
+      <DependentUpon>201607091743245_delDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607091832077_taskEmail.cs" />
+    <Compile Include="Migrations\201607091832077_taskEmail.Designer.cs">
+      <DependentUpon>201607091832077_taskEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607091954014_taskCommentDel.cs" />
+    <Compile Include="Migrations\201607091954014_taskCommentDel.Designer.cs">
+      <DependentUpon>201607091954014_taskCommentDel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CustomerRepository.cs" />
-    <Compile Include="Repositories\DashboardWidgetRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
@@ -135,6 +146,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607041059554_addedStatus.resx">
       <DependentUpon>201607041059554_addedStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607091743245_delDashboard.resx">
+      <DependentUpon>201607091743245_delDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607091832077_taskEmail.resx">
+      <DependentUpon>201607091832077_taskEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607091954014_taskCommentDel.resx">
+      <DependentUpon>201607091954014_taskCommentDel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

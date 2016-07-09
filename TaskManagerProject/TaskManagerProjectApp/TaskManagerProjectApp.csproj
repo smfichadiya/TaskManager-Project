@@ -252,6 +252,7 @@
     <Content Include="Views\Home\UserPanel.cshtml" />
     <Content Include="Views\Users\Delete.cshtml" />
     <Content Include="Views\Home\UnregisteredPanel.cshtml" />
+    <Content Include="Views\Tasks\DeleteComment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
