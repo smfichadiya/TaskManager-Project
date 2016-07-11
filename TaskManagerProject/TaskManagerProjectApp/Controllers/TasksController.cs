@@ -32,7 +32,9 @@ namespace TaskManagerProjectApp.Controllers
                 var userId = User.Identity.GetUserId();
                 tasks = _taskRepository.GetAllFromUser(userId);
             }
-           
+
+            ViewBag.ProjectId = new SelectList(_projectRepository.GetAll(), "ID", "Name");
+            ViewBag.Users = _userRepository.GetAll();
             return View(tasks);
         }
 
@@ -58,6 +60,20 @@ namespace TaskManagerProjectApp.Controllers
             ViewBag.Users = _userRepository.GetAll();
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateAsync(MyTask task)
+        {         
+                if (task.UserId == 0)
+                    task.UserId = null;
+
+            if (_taskRepository.Create(task))
+                return Json("ok");
+
+
+
+            return Json("notOk");
         }
 
         [Authorize(Roles = "Admin")]
@@ -98,6 +114,15 @@ namespace TaskManagerProjectApp.Controllers
                 return RedirectToAction("Index");
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteAsync(MyTask task)
+        {
+            if (_taskRepository.Delete(task.ID))
+                return Json("ok");
+
+            return Json("notOk");
         }
 
         public ActionResult Details(int? id)

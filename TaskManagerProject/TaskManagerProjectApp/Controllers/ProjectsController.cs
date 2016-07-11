@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using TaskManagerProject.Domain.Entities;
 using TaskManagerProject.Domain.Interfaces;
 using TaskManagerProject.Domain.RepositoryEF.Repositories;
+using TaskManagerProjectApp.Models;
 
 namespace TaskManagerProjectApp.Controllers
 {
@@ -31,8 +32,7 @@ namespace TaskManagerProjectApp.Controllers
                 var userId = User.Identity.GetUserId();
                 projects = _projectRepository.GetAllFromUser(userId);
             }
-            
-
+          
             return View(projects);
         }
 
@@ -57,6 +57,19 @@ namespace TaskManagerProjectApp.Controllers
             }
 
             return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult CreateAsync(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_projectRepository.Create(project))
+                    return Json("ok");
+            }
+
+            return Json("Bad call");
         }
         [Authorize(Roles = "Admin")]
         public ActionResult Delete(Project project)
@@ -112,6 +125,29 @@ namespace TaskManagerProjectApp.Controllers
             var dbProject = _projectRepository.GetById(id);
 
             return View(dbProject);
+        }
+
+        public JsonResult GetProjectsByPage(int page,int size)
+        {
+            int startIndex = (page - 1) * size;
+
+            var totalProjects = _projectRepository.GetAll().Count;
+
+            if (page * size > totalProjects)
+                size = totalProjects - startIndex;
+
+            var projects = _projectRepository.GetAll()
+                            .OrderByDescending(p => p.DateCreated)
+                            .ToList()
+                            .GetRange(startIndex,size);
+
+            var result = new List<PaginationUserViewModel>();
+
+            foreach(var item in projects)
+            {
+                result.Add(PaginationUserViewModel.CreateFromModel(item));
+            }
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -10,11 +10,19 @@
    
     <dl class="dl-horizontal alert alert-info">
         <dt>
-            @Html.DisplayNameFor(model => model.Project.Name)
+          Task Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Project.Name)
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Project Name
+        </dt>
+
+        <dd>
+            <a href="/Projects/Details/@Model.ProjectId"> @Model.Project.Name</a>
         </dd>
 
         <dt>

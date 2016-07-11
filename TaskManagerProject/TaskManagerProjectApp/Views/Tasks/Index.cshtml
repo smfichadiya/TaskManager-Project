@@ -4,48 +4,50 @@
     ViewBag.Title = "Index";
 }
 
-<h2 class="page-header">Showing All Tasks in the System</h2>
+<h2 class="page-header">Showing All Tasks</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create",null, new {@class = "btn btn-info" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-info" })
+    <button id="newTaskAsyncBtn" class="btn btn-info">Create Async</button>
 </p>
 <table class="table">
     <tr>
         <th>
-           Task Name
+            Task Name
         </th>
         <th>
-           Project Name
+            Project Name
         </th>
         <th>
-           User
+            User
         </th>
 
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-      
+
         <th>
             @Html.DisplayNameFor(model => model.StartDateTime)
         </th>
-       
+
         <th>
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.status)
         </th>
-           
+
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.Name)
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a href="/Projects/Details/@item.ProjectId"> @item.Project.Name</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User.Email)
@@ -54,28 +56,170 @@
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
-       
+
         <td>
             @Html.DisplayFor(modelItem => item.StartDateTime)
         </td>
-        
+
         <td>
             @Html.DisplayFor(modelItem => item.Type)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.status)
         </td>
-      
-      
+
+
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
+            <a href="#" class="deleteTaskAsyncBtn" taskId ="@item.ID">Delete Async</a>
         </td>
     </tr>
-}
+    }
 
 </table>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create new Task</h4>
+            </div>
+            <div class="modal-body">
+                <form id="createForm">
+                    <div class="form-horizontal alert alert-success">
+
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Task Name:</label>
+                            <div class="col-md-10">
+                                <input type="text" name="Name" id="taskName" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Description:</label>
+                            <div class="col-md-10">
+                                <input type="text" name="Description" id="taskDescription" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Estimated Hours:</label>
+                            <div class="col-md-10">
+                                <input type="number" name="EstimatedHours" id="taskEstimatedHours" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Start Date:</label>
+                            <div class="col-md-10">
+                                <input type="text" name="StartDateTime" id="taskStartDateTime" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">ENd Date:</label>
+                            <div class="col-md-10">
+                                <input type="text" name="EndDateTime" id="taskEndDateTime" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Task Type:</label>
+                            <div class="col-md-10">
+                                <select class="form-control" id="taskType" name="Type">
+                                    <option selected="selected" value="0">Task</option>
+                                    <option value="1">Bug</option>
+                                    <option value="2">ChangeRequest</option>
+                                    <option value="3">SupportRequest</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Task Status:</label>
+                            <div class="col-md-10">
+                                <select class="form-control" id="taskStatus" name="status">
+                                    <option selected="selected" value="0">ToDo</option>
+                                    <option value="1">InProgress</option>
+                                    <option value="2">InTesting</option>
+                                    <option value="3">Done</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">ProjectId:</label>
+                            <div class="col-md-10">
+                                @Html.DropDownList("ProjectId", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2">UserId:</label>
+                            <div class="col-md-10">
+                                <select class="form-control" name="UserId">
+                                    <option value="0"></option>
+                                    @foreach (var user in ViewBag.Users)
+                                    {
+                                        <option value="@user.ID">@user.DisplayName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="button" id="createAsyncSubmit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="myModalDelete" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete this Task?</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this task ?</p>
+                <form id="deleteForm">
+                   task Id: <input type="text" value="" id="deleteInput" name="ID" readonly />
+                </form>
+            </div>
+            <div class="modal-footer">
+               
+                <button type="button" id="deleteAsyncSubmit" class="btn btn-success" data-dismiss="modal">Delete</button>
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 @section scripts{
@@ -85,7 +229,55 @@
             var items = $(".side-nav").find("li");
             items.removeClass("active");
             $(".li-Tasks").addClass("active");
-            console.log("HERE")
+
+            $("#newTaskAsyncBtn").on("click", function () {
+                event.preventDefault();
+                $("#myModal").modal("show");
+            });
+
+            $("#createAsyncSubmit").on("click", function () {
+                var formData = $("#createForm").serializeArray();
+
+                $.post("/Tasks/CreateAsync", formData, function (result) {
+                    if (result == "ok") {
+                        $("#myModal").modal("hide");
+                        location.reload(true);
+                        console.log("Created Task");
+                    }
+                    else {
+                        console.log("Failed to Create Task");
+                        $("#myModal").modal("hide");
+                    }
+                });
+
+            });
+
+
+
+            $(".deleteTaskAsyncBtn").on("click", function () {
+                event.preventDefault();
+                var taskId = $(this).attr("taskId");
+                $("#deleteInput").val(taskId);
+             
+                $("#myModalDelete").modal("show");
+            });
+
+            $("#deleteAsyncSubmit").on("click", function () {
+                var formData = $("#deleteForm").serializeArray();
+
+                $.post("/Tasks/DeleteAsync", formData, function (result) {
+                    if (result == "ok") {
+                        $("#myModalDelete").modal("hide");
+                        location.reload(true);
+                        console.log("deleted Task");
+                    }
+                    else {                   
+                        console.log("Failed to Delete Task");
+                        $("#myModalDelete").modal("hide");
+                    }
+                });
+
+            });
 
         });
     </script>

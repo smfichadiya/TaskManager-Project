@@ -83,5 +83,26 @@ namespace TaskManagerProjectApp.Models
         public int TaskId { get; set; }
     }
 
+    public class PaginationUserViewModel
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string CustomerName { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime DateCreated { get; set; }
+
+        public static PaginationUserViewModel CreateFromModel(Project project)
+        {
+            return new PaginationUserViewModel
+            {
+                ID = project.ID,
+                CustomerName = project.Customer.Name,
+                Name = project.Name,
+                IsActive = project.IsActive,
+                DateCreated = project.DateCreated
+            };
+        }
+    }
+
 
 }
