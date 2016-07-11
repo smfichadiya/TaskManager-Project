@@ -129,14 +129,36 @@ namespace TaskManagerProjectApp.Controllers
 
         public JsonResult GetProjectsByPage(int page,int size)
         {
+
+
+            var projects = new List<Project>();
+
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                projects = _projectRepository.GetAll();
+            }
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                projects = _projectRepository.GetAllFromUser(userId);
+            }
+
+            if(projects == null)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+
             int startIndex = (page - 1) * size;
 
-            var totalProjects = _projectRepository.GetAll().Count;
+            var totalProjects = projects.Count;
 
             if (page * size > totalProjects)
                 size = totalProjects - startIndex;
 
-            var projects = _projectRepository.GetAll()
+            if(totalProjects < size)           
+                size = totalProjects;
+           
+             projects = projects
                             .OrderByDescending(p => p.DateCreated)
                             .ToList()
                             .GetRange(startIndex,size);

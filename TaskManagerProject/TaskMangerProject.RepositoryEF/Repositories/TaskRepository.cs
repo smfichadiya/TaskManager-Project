@@ -43,6 +43,10 @@ namespace TaskManagerProject.Domain.RepositoryEF.Repositories
             if (dbTask == null)
                 return false;
 
+            foreach(var comment in dbTask.Comments)
+            {
+                comment.TaskId = null;
+            }
             db.Tasks.Remove(dbTask);
             db.SaveChanges();
 
