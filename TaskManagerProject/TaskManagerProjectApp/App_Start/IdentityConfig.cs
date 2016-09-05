@@ -44,7 +44,7 @@ namespace TaskManagerProjectApp
 
             using (SmtpClient smtpClient = new SmtpClient())
             {
-                NetworkCredential credentials = new NetworkCredential("zadacistr@gmail.com", "edendvatri");
+                NetworkCredential credentials = new NetworkCredential("zadacistr@gmail.com", "thepassword");
                 smtpClient.Credentials = credentials;
                 smtpClient.Host = "smtp.gmail.com";
                 smtpClient.Port = 587;
